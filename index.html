@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اردو ناول نگری - Urdu Novels Portal</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Urdu Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Nastaliq+Urdu:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- JSPDF for rendering fallback downloadable PDF files directly in browser -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            850: '#043e30',
+                            900: '#064e3b',
+                            950: '#022c22',
+                        },
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        },
+                        parchment: {
+                            50: '#fdfbf7',
+                            100: '#f8f4eb',
+                            200: '#f1e8d7',
+                            900: '#26221c',
+                        }
+                    },
+                    fontFamily: {
+                        urdu: ['Noto Nastaliq Urdu', 'Amiri', 'serif'],
+                        amiri: ['Amiri', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .urdu-text {
+            font-family: 'Noto Nastaliq Urdu', 'Amiri', serif;
+            line-height: 2.2;
+        }
+        .urdu-title {
+            font-family: 'Noto Nastaliq Urdu', 'Amiri', serif;
+            line-height: 1.8;
+        }
+        /* Custom scrollbar for desktop */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1e8d7;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #064e3b;
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #111827;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #d97706;
+        }
+        .reading-view {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="bg-parchment-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-sans antialiased min-h-screen flex flex-col transition-colors duration-300">
+
+    <!-- TOP NAVIGATION HEADER -->
+    <header class="sticky top-0 z-40 bg-emerald-900 text-white shadow-lg border-b border-gold-500/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo & Site Title -->
+                <div class="flex items-center space-x-3 space-x-reverse cursor-pointer" onclick="switchTab('home')">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-gold-500 to-gold-400 text-emerald-950 flex items-center justify-center text-2xl font-bold shadow-md border-2 border-white/20">
+                        <i class="fa-solid fa-book-quran"></i>
+                    </div>
+                    <div>
+                        <h1 id="site-logo-text" class="urdu-title text-xl sm:text-2xl font-bold text-gold-400 tracking-wide">
+                            اردو ناول نگری
+                        </h1>
+                        <p class="text-xs text-emerald-200 font-sans hidden sm:block">پاکستان کا سب سے بڑا اردو ڈیجیٹل ناول پورٹل</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center space-x-6 space-x-reverse font-urdu text-lg">
+                    <button onclick="switchTab('home')" class="hover:text-gold-400 transition-colors px-2 py-1 rounded">صفحہ اول</button>
+                    <button onclick="switchTab('novels')" class="hover:text-gold-400 transition-colors px-2 py-1 rounded">تمام ناولز</button>
+                    <button onclick="switchTab('categories')" class="hover:text-gold-400 transition-colors px-2 py-1 rounded">کیٹیگریز</button>
+                    <button onclick="switchTab('about')" class="hover:text-gold-400 transition-colors px-2 py-1 rounded">ہمارے بارے میں</button>
+                </nav>
+
+                <!-- Actions: Youtube & Admin -->
+                <div class="flex items-center space-x-3 space-x-reverse">
+                    <!-- YouTube Direct Channel Link -->
+                    <a id="nav-yt-btn" href="https://youtube.com" target="_blank" rel="noopener noreferrer" 
+                       class="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg transition-all shadow-sm hover:shadow">
+                        <i class="fa-brands fa-youtube text-base"></i>
+                        <span class="hidden sm:inline">یوٹیوب چینل</span>
+                    </a>
+
+                    <!-- Admin Panel Button -->
+                    <button onclick="openAdminModal()" 
+                            class="bg-gold-500 hover:bg-gold-600 text-emerald-950 font-bold text-xs sm:text-sm px-3 py-2 rounded-lg transition-all flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-user-shield"></i>
+                        <span>ایڈمن پینل</span>
+                    </button>
+
+                    <!-- Mobile Menu Toggle Button -->
+                    <button onclick="toggleMobileNav()" class="md:hidden text-white hover:text-gold-400 text-2xl p-1 focus:outline-none">
+                        <i class="fa-solid fa-bars" id="mobile-menu-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown Navigation -->
+        <div id="mobile-nav" class="hidden md:hidden bg-emerald-950 border-t border-emerald-800 px-4 pt-2 pb-4 space-y-2 font-urdu text-lg">
+            <button onclick="switchTab('home'); toggleMobileNav();" class="block w-full text-right py-2 px-3 text-white hover:bg-emerald-800 rounded">صفحہ اول</button>
+            <button onclick="switchTab('novels'); toggleMobileNav();" class="block w-full text-right py-2 px-3 text-white hover:bg-emerald-800 rounded">تمام ناولز</button>
+            <button onclick="switchTab('categories'); toggleMobileNav();" class="block w-full text-right py-2 px-3 text-white hover:bg-emerald-800 rounded">کیٹیگریز</button>
+            <button onclick="switchTab('about'); toggleMobileNav();" class="block w-full text-right py-2 px-3 text-white hover:bg-emerald-800 rounded">ہمارے بارے میں</button>
+        </div>
+    </header>
+
+    <!-- MAIN APP WRAPPER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- TAB 1: HOMEPAGE VIEW -->
+        <section id="tab-home" class="tab-content space-y-8">
+            
+            <!-- Hero Banner -->
+            <div class="relative bg-gradient-to-r from-emerald-900 via-emerald-850 to-emerald-950 rounded-2xl p-6 sm:p-10 text-white shadow-xl overflow-hidden border border-gold-500/20">
+                <div class="absolute -left-10 -bottom-10 w-48 h-48 bg-gold-500/10 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="relative z-10 max-w-3xl space-y-4 text-right">
+                    <span class="inline-block bg-gold-500/20 text-gold-400 text-xs sm:text-sm font-semibold px-3 py-1 rounded-full border border-gold-500/30">
+                        خوش آمدید!
+                    </span>
+                    <h2 class="urdu-title text-2xl sm:text-4xl lg:text-5xl font-bold text-gold-400 leading-tight">
+                        اپنی پسندیدہ اردو ناولز آن لائن پڑھیں اور ڈاؤن لوڈ کریں۔
+                    </h2>
+                    <p class="urdu-text text-gray-200 text-sm sm:text-lg">
+                        مشہور و معروف اردو مصنفین کی تمام کتب، رومانی، تاریخی اور پراسرار ناولز کا مکمل مجموعہ بالکل مفت اعلیٰ کوالٹی میں دستیاب ہے۔
+                    </p>
+                    
+                    <!-- Search Bar inside Hero -->
+                    <div class="pt-2">
+                        <div class="relative max-w-xl">
+                            <input type="text" id="hero-search-input" onkeyup="handleSearch(this.value)" 
+                                   placeholder="ناول کا نام، مصنف یا کیٹیگری تلاش کریں..." 
+                                   class="w-full bg-white/10 text-white placeholder-gray-300 pr-12 pl-4 py-3 sm:py-4 rounded-xl backdrop-blur-md border border-white/20 focus:outline-none focus:ring-2 focus:ring-gold-400 urdu-text text-sm sm:text-base">
+                            <i class="fa-solid fa-magnifying-glass absolute right-4 top-1/2 -translate-y-1/2 text-gold-400 text-lg"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- YouTube Promo Banner (Dynamic) -->
+            <div id="yt-promo-section" class="bg-gradient-to-r from-red-900/10 via-red-800/10 to-transparent dark:bg-gray-800 border-2 border-red-500/20 rounded-2xl p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full bg-red-600 text-white flex items-center justify-center text-2xl shrink-0 shadow-md">
+                        <i class="fa-brands fa-youtube"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg text-gray-900 dark:text-white urdu-title">ہمارا یوٹیوب چینل سبسکرائب کریں</h3>
+                        <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300">ناولز کے آڈیو ورژن اور تازہ ترین اپڈیٹس کے لیے ہمارے چینل کو فالو کریں۔</p>
+                    </div>
+                </div>
+                <a id="hero-yt-link" href="https://youtube.com" target="_blank" rel="noopener noreferrer" 
+                   class="shrink-0 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition shadow flex items-center gap-2">
+                    <i class="fa-brands fa-youtube"></i>
+                    <span>چینل پر جائیں</span>
+                </a>
+            </div>
+
+            <!-- Category Quick Filter Chips -->
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xl font-bold urdu-title text-emerald-900 dark:text-gold-400">کیٹیگری کے لحاظ سے دیکھیں</h3>
+                    <button onclick="switchTab('categories')" class="text-xs text-emerald-800 dark:text-emerald-400 hover:underline font-semibold">تمام کیٹیگریز &larr;</button>
+                </div>
+                <div id="home-category-chips" class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+                    <!-- Dynamic chips inserted via JS -->
+                </div>
+            </div>
+
+            <!-- Novels List Section Header -->
+            <div class="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 pb-3">
+                <h3 class="text-xl sm:text-2xl font-bold urdu-title text-emerald-900 dark:text-gold-400">
+                    تازہ ترین ناولز
+                </h3>
+                <span id="novel-count-badge" class="bg-emerald-100 dark:bg-emerald-900/50 text-emerald-900 dark:text-emerald-300 text-xs font-semibold px-2.5 py-1 rounded-full border border-emerald-300 dark:border-emerald-700">
+                    0 ناولز
+                </span>
+            </div>
+
+            <!-- Novel Cards Grid -->
+            <div id="novels-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Cards will be populated dynamically -->
+            </div>
+
+            <!-- Empty State View -->
+            <div id="no-novels-view" class="hidden text-center py-12 space-y-3 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-8">
+                <i class="fa-solid fa-book-open text-5xl text-gray-400"></i>
+                <h4 class="text-lg font-bold urdu-title text-gray-700 dark:text-gray-200">کوئی ناول نہیں ملا!</h4>
+                <p class="text-sm text-gray-500 dark:text-gray-400">آپ کی مطلوبہ تلاش یا کیٹیگری میں کوئی ناول دستیاب نہیں ہے۔</p>
+                <button onclick="resetFilters()" class="mt-2 bg-emerald-900 text-white text-xs px-4 py-2 rounded-lg hover:bg-emerald-800 transition">
+                    تمام فلٹرز ختم کریں
+                </button>
+            </div>
+        </section>
+
+        <!-- TAB 2: ALL NOVELS VIEW -->
+        <section id="tab-novels" class="tab-content hidden space-y-6">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 space-y-4">
+                <h2 class="text-2xl font-bold urdu-title text-emerald-900 dark:text-gold-400">تمام ناولز کا مجموعہ</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <input type="text" id="novels-tab-search" onkeyup="handleSearch(this.value)" placeholder="نام، مصنف سے تلاش کریں..." class="col-span-2 w-full bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 urdu-text">
+                    <select id="novels-tab-category-filter" onchange="filterByCategory(this.value)" class="w-full bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 urdu-text">
+                        <option value="ALL">تمام کیٹیگریز</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="all-novels-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamic Content -->
+            </div>
+        </section>
+
+        <!-- TAB 3: CATEGORIES VIEW -->
+        <section id="tab-categories" class="tab-content hidden space-y-6">
+            <div class="text-right space-y-2">
+                <h2 class="text-2xl font-bold urdu-title text-emerald-900 dark:text-gold-400">ناول کیٹیگریز</h2>
+                <p class="text-sm text-gray-600 dark:text-gray-400">اپنی پسند کی کیٹیگری پر کلک کر کے اس کے تمام ناولز ملاحظہ فرمائیں۔</p>
+            </div>
+
+            <div id="categories-cards-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                <!-- Dynamic Category Cards -->
+            </div>
+        </section>
+
+        <!-- TAB 4: ABOUT PAGE -->
+        <section id="tab-about" class="tab-content hidden space-y-6">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-10 shadow-sm border border-gray-200 dark:border-gray-700 space-y-6 text-right">
+                <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                    <h2 class="text-3xl font-bold urdu-title text-emerald-900 dark:text-gold-400">ہمارے بارے میں</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">اردو ادب کی ترویج و اشاعت کا بہترین ڈیجیٹل ذریعہ</p>
+                </div>
+
+                <div id="about-page-content" class="urdu-text text-base sm:text-lg text-gray-700 dark:text-gray-200 leading-relaxed whitespace-pre-line">
+                    <!-- Dynamic content from admin settings -->
+                </div>
+
+                <!-- Social Links Grid -->
+                <div class="pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-bold urdu-title text-gray-900 dark:text-white mb-4">ہمارے سوشل میڈیا روابط</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3" id="social-links-container">
+                        <!-- Dynamic Social Links -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: READ ONLINE NOVEL VIEWER MODAL/SCREEN -->
+        <section id="reader-screen" class="hidden fixed inset-0 z-50 bg-parchment-100 dark:bg-gray-950 overflow-y-auto flex flex-col">
+            <!-- Reader Header Navigation Bar -->
+            <div class="sticky top-0 z-10 bg-emerald-900 text-white px-4 py-3 shadow-md flex items-center justify-between border-b border-gold-500/30">
+                <div class="flex items-center space-x-3 space-x-reverse">
+                    <button onclick="closeReader()" class="bg-white/10 hover:bg-white/20 p-2 rounded-lg text-white transition flex items-center gap-1.5 text-xs font-semibold">
+                        <i class="fa-solid fa-arrow-right"></i>
+                        <span>واپس جائیں</span>
+                    </button>
+                    <div>
+                        <h3 id="reader-novel-title" class="font-bold text-gold-400 urdu-title text-base sm:text-lg leading-tight"></h3>
+                        <p id="reader-writer-name" class="text-xs text-emerald-200"></p>
+                    </div>
+                </div>
+
+                <!-- Reading Controls (Font size, Theme) -->
+                <div class="flex items-center space-x-2 space-x-reverse">
+                    <button onclick="adjustReaderFontSize(-2)" class="bg-white/10 hover:bg-white/20 px-2.5 py-1 rounded text-xs font-bold" title="فونٹ چھوٹا کریں">A-</button>
+                    <button onclick="adjustReaderFontSize(2)" class="bg-white/10 hover:bg-white/20 px-2.5 py-1 rounded text-xs font-bold" title="فونٹ بڑا کریں">A+</button>
+                    <button onclick="toggleReaderTheme()" class="bg-white/10 hover:bg-white/20 p-2 rounded text-xs" title="تھیم تبدیل کریں">
+                        <i class="fa-solid fa-circle-half-stroke"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Reader Content Box -->
+            <div class="flex-grow p-4 sm:p-8">
+                <div id="reader-paper" class="reading-view bg-parchment-50 dark:bg-gray-900 border border-parchment-200 dark:border-gray-800 rounded-2xl p-6 sm:p-12 shadow-lg min-h-[80vh] transition-all">
+                    
+                    <div class="text-center pb-8 border-b border-gold-500/20 mb-8 space-y-2">
+                        <h1 id="reader-heading" class="text-2xl sm:text-4xl font-bold urdu-title text-emerald-950 dark:text-gold-400"></h1>
+                        <p id="reader-author-sub" class="text-sm text-gray-600 dark:text-gray-400 urdu-text"></p>
+                        <span id="reader-cat-tag" class="inline-block bg-gold-500/10 text-gold-600 dark:text-gold-400 text-xs px-3 py-1 rounded-full font-semibold"></span>
+                    </div>
+
+                    <!-- Main Novel Body -->
+                    <div id="reader-text-body" class="urdu-text text-gray-900 dark:text-gray-100 text-lg sm:text-xl leading-loose tracking-wide whitespace-pre-wrap text-justify">
+                        <!-- Content injected via JS -->
+                    </div>
+
+                    <div class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <button onclick="closeReader()" class="w-full sm:w-auto bg-emerald-900 hover:bg-emerald-800 text-white font-semibold px-6 py-2.5 rounded-xl text-sm transition">
+                            قراءة مکمل کی - واپس صفحہ اول
+                        </button>
+                        <button id="reader-download-btn" class="w-full sm:w-auto bg-gold-500 hover:bg-gold-600 text-emerald-950 font-bold px-6 py-2.5 rounded-xl text-sm transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            <span>ناول پی ڈی ایف (PDF) میں ڈاؤن لوڈ کریں</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-emerald-950 text-emerald-200 border-t border-gold-500/30 mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 border-b border-emerald-850 pb-6">
+                <div class="flex items-center space-x-3 space-x-reverse text-right">
+                    <div class="w-10 h-10 rounded-full bg-gold-500 text-emerald-950 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-book-quran"></i>
+                    </div>
+                    <div>
+                        <h4 id="footer-logo-text" class="urdu-title text-lg font-bold text-gold-400">اردو ناول نگری</h4>
+                        <p class="text-xs text-emerald-300">مفت اردو کتب و ناولز کی بہترین لائبریری</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4 space-x-reverse text-sm">
+                    <button onclick="switchTab('home')" class="hover:text-gold-400 transition">صفحہ اول</button>
+                    <button onclick="switchTab('novels')" class="hover:text-gold-400 transition">تمام ناولز</button>
+                    <button onclick="switchTab('about')" class="hover:text-gold-400 transition">رابطہ کریں</button>
+                    <button onclick="openAdminModal()" class="text-gold-400 hover:underline">ایڈمن لاگ ان</button>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-between text-xs text-emerald-400 gap-2">
+                <p>&copy; 2026 جملہ حقوق بحق اردو ناول نگری محفوظ ہیں۔</p>
+                <p>موبائل فون سے آسانی کے ساتھ استعمال کے لیے تیار کردہ۔</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ADMIN CMS MODAL -->
+    <div id="admin-modal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
+        <div class="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-2xl w-full max-w-4xl shadow-2xl border border-gold-500/30 overflow-hidden my-auto max-h-[92vh] flex flex-col">
+            
+            <!-- Modal Header -->
+            <div class="bg-emerald-900 text-white px-6 py-4 flex items-center justify-between border-b border-gold-500/30">
+                <div class="flex items-center space-x-3 space-x-reverse">
+                    <i class="fa-solid fa-user-gear text-gold-400 text-xl"></i>
+                    <h3 class="font-bold urdu-title text-xl text-gold-400">ایڈمن کنٹرول پینل (CMS)</h3>
+                </div>
+                <button onclick="closeAdminModal()" class="text-emerald-200 hover:text-white text-2xl font-bold">&times;</button>
+            </div>
+
+            <!-- Modal Nav Tabs -->
+            <div class="flex border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-6 font-urdu text-sm sm:text-base">
+                <button id="admin-tab-btn-novels" onclick="switchAdminTab('novels')" class="py-3 px-4 font-bold border-b-2 border-emerald-800 text-emerald-800 dark:text-gold-400">
+                    ناولز مینجمنٹ
+                </button>
+                <button id="admin-tab-btn-add" onclick="switchAdminTab('add')" class="py-3 px-4 text-gray-500 hover:text-emerald-800">
+                    + نیا ناول شامل کریں
+                </button>
+                <button id="admin-tab-btn-settings" onclick="switchAdminTab('settings')" class="py-3 px-4 text-gray-500 hover:text-emerald-800">
+                    ویب سائٹ سیٹنگز
+                </button>
+            </div>
+
+            <!-- Modal Content Area -->
+            <div class="p-6 overflow-y-auto flex-grow space-y-6">
+
+                <!-- SUB-TAB 1: MANAGE EXISTING NOVELS -->
+                <div id="admin-subtab-novels" class="admin-subtab space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold urdu-title text-lg">موجودہ ناولز کی فہرست</h4>
+                        <button onclick="switchAdminTab('add')" class="bg-emerald-800 hover:bg-emerald-900 text-white text-xs px-3 py-2 rounded-lg transition flex items-center gap-1">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>نیا ناول شامل کریں</span>
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto border border-gray-200 dark:border-gray-700 rounded-xl">
+                        <table class="w-full text-right text-xs sm:text-sm">
+                            <thead class="bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700 font-urdu">
+                                <tr>
+                                    <th class="p-3">کور</th>
+                                    <th class="p-3">ناول کا نام</th>
+                                    <th class="p-3">مصنف</th>
+                                    <th class="p-3">کیٹیگری</th>
+                                    <th class="p-3 text-center">ایکشن</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-novels-tbody" class="divide-y divide-gray-200 dark:divide-gray-700">
+                                <!-- Dynamic table rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- SUB-TAB 2: ADD / EDIT NOVEL FORM -->
+                <div id="admin-subtab-add" class="admin-subtab hidden space-y-4">
+                    <h4 id="admin-form-title" class="font-bold urdu-title text-xl text-emerald-900 dark:text-gold-400 border-b pb-2">نیا ناول شامل کریں</h4>
+                    
+                    <form id="novel-cms-form" onsubmit="handleSaveNovel(event)" class="space-y-4">
+                        <input type="hidden" id="form-novel-id">
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold mb-1 urdu-text">ناول کا نام (Novel Title) *</label>
+                                <input type="text" id="form-title" required placeholder="مثال: پیر کامل" class="w-full border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold mb-1 urdu-text">مصنف / شاعر کا نام (Writer Name) *</label>
+                                <input type="text" id="form-writer" required placeholder="مثال: عمیرہ احمد" class="w-full border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold mb-1 urdu-text">کیٹیگری منتخب کریں *</label>
+                                <select id="form-category" required class="w-full border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                                    <option value="رومانی">رومانی (Romantic)</option>
+                                    <option value="اسلامی">اسلامی (Islamic)</option>
+                                    <option value="معاشرتی">معاشرتی (Social)</option>
+                                    <option value="پراسرار">پراسرار (Mystery)</option>
+                                    <option value="خوفناک">خوفناک (Horror)</option>
+                                    <option value="تاریخی">تاریخی (Historical)</option>
+                                    <option value="دیگر">دیگر (Other)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold mb-1 urdu-text">یا نئی کیٹیگری کا نام لکھیں</label>
+                                <input type="text" id="form-custom-category" placeholder="مثال: جاسوسی" class="w-full border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                            </div>
+                        </div>
+
+                        <!-- Cover Image Upload or URL -->
+                        <div class="space-y-2">
+                            <label class="block text-xs font-semibold urdu-text">ناول کا کور امیج (Cover Image File or Image URL)</label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+                                <input type="file" id="form-cover-file" accept="image/*" onchange="handleCoverFileSelect(event)" class="text-xs text-gray-500 file:mr-2 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-100 file:text-emerald-900 hover:file:bg-emerald-200">
+                                <input type="text" id="form-cover-url" placeholder="یا تصویر کا URL پیسٹ کریں..." class="w-full border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-600 outline-none">
+                            </div>
+                            <div id="cover-preview-box" class="hidden mt-2 flex items-center gap-2">
+                                <span class="text-xs text-gray-500">پیش نظارہ:</span>
+                                <img id="cover-preview-img" src="" class="w-12 h-16 object-cover rounded shadow">
+                            </div>
+                        </div>
+
+                        <!-- Short Description -->
+                        <div>
+                            <label class="block text-xs font-semibold mb-1 urdu-text">مختصر تفصیل (Short Description) *</label>
+                            <textarea id="form-description" rows="2" required placeholder="ناول کا مختصر خلاصہ یا اقتباس..." class="w-full border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 rounded-xl p-3 text-sm focus:ring-2 focus:ring-emerald-600 outline-none urdu-text"></textarea>
+                        </div>
+
+                        <!-- Full Text for Online Reading -->
+                        <div>
+                            <label class="block text-xs font-semibold mb-1 urdu-text">مکمل ناول کا متن - آن لائن پڑھنے کے لیے (Read Online Full Content) *</label>
+                            <textarea id="form-content" rows="6" required placeholder="یہاں مکمل ناول کا متن تحریر کریں یا کاپی پیسٹ کریں۔..." class="w-full border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 rounded-xl p-3 text-sm focus:ring-2 focus:ring-emerald-600 outline-none urdu-text"></textarea>
+                        </div>
+
+                        <!-- PDF Upload Option -->
+                        <div class="bg-gray-50 dark:bg-gray-900 p-4 rounded-xl border border-gray-200 dark:border-gray-700 space-y-2">
+                            <label class="block text-xs font-semibold urdu-text">پی ڈی ایف فائل اپلوڈ کریں (PDF Download File)</label>
+                            <p class="text-xs text-gray-500">اپنے موبائل یا کمپیوٹر سے اصلی پی ڈی ایف فائل اپلوڈ کریں۔ اگر اپلوڈ نہ کریں تو خودکار پی ڈی ایف تیار کی جائے گی۔</p>
+                            <input type="file" id="form-pdf-file" accept="application/pdf" onchange="handlePdfFileSelect(event)" class="text-xs text-gray-500 file:mr-2 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-100 file:text-emerald-900 hover:file:bg-emerald-200">
+                            <div id="pdf-file-status" class="text-xs font-semibold text-emerald-700 dark:text-emerald-400 hidden"></div>
+                        </div>
+
+                        <div class="flex items-center justify-end space-x-3 space-x-reverse pt-2">
+                            <button type="button" onclick="switchAdminTab('novels')" class="px-4 py-2 border border-gray-300 rounded-xl text-xs font-semibold">منسوخ کریں</button>
+                            <button type="submit" class="bg-emerald-900 hover:bg-emerald-800 text-white font-bold px-6 py-2 rounded-xl text-xs transition flex items-center gap-2 shadow">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                <span>محفوظ / شائع کریں</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- SUB-TAB 3: WEBSITE SETTINGS -->
+                <div id="admin-subtab-settings" class="admin-subtab hidden space-y-4">
+                    <h4 class="font-bold urdu-title text-xl text-emerald-900 dark:text-gold-400 border-b pb-2">ویب سائٹ عمومی سیٹنگز</h4>
+                    
+                    <form id="site-settings-form" onsubmit="handleSaveSettings(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold mb-1 urdu-text">ویب سائٹ کا نام (Website Name)</label>
+                            <input type="text" id="setting-site-name" class="w-full border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold mb-1 urdu-text">یوٹیوب چینل کا لنک (YouTube Channel URL)</label>
+                            <input type="url" id="setting-yt-url" placeholder="https://youtube.com/c/yourchannel" class="w-full border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                        </div>
+
+                        <!-- Social Links -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">فیس بک لنک (Facebook)</label>
+                                <input type="url" id="setting-fb-url" class="w-full border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">انسٹاگرام لنک (Instagram)</label>
+                                <input type="url" id="setting-insta-url" class="w-full border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">واٹس ایپ نمبر / لنک (WhatsApp)</label>
+                                <input type="text" id="setting-wa-url" placeholder="https://wa.me/923000000000" class="w-full border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">ای میل ایڈریس (Contact Email)</label>
+                                <input type="email" id="setting-email" class="w-full border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold mb-1 urdu-text">ہمارے بارے میں متن (About Us Text)</label>
+                            <textarea id="setting-about-text" rows="5" class="w-full border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 rounded-xl p-3 text-sm focus:ring-2 focus:ring-emerald-600 outline-none urdu-text"></textarea>
+                        </div>
+
+                        <div class="flex items-center justify-end pt-2">
+                            <button type="submit" class="bg-emerald-900 hover:bg-emerald-800 text-white font-bold px-6 py-2 rounded-xl text-xs transition">
+                                سیٹنگز محفوظ کریں
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* MAIN APPLICATION DATA ENGINE & LOGIC */
+
+        // Default Initial Seed Data (5 Classic Urdu Novels)
+        const INITIAL_NOVELS = [
+            {
+                id: "novel-1",
+                title: "پیر کامل (صلی اللہ علیہ وآلہ وسلم)",
+                writer: "عمیرہ احمد",
+                category: "اسلامی",
+                cover: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80",
+                description: "پیر کامل عمیرہ احمد کا لکھا ہوا ایک شاہکار ناول ہے۔ یہ سالار سکندر اور امامہ ہاشم کی کہانی ہے جو گمراہی سے ہدایت کے سفر پر مبنی ہے۔",
+                content: `پیر کامل (صلی اللہ علیہ وآلہ وسلم) - عمیرہ احمد
+
+باب اول:
+زندگی بعض اوقات انسان کو ایسے موڑ پر لا کھڑا کرتی ہے جہاں سے واپسی کے تمام راستے مسدود معلوم ہوتے ہیں۔ امامہ ہاشم بھی ایک ایسے ہی دوراہے پر کھڑی تھی۔ اس کا دل کسی ان دیکھی حقیقت کی تلاش میں تڑپ رہا تھا۔
+
+سالار سکندر، جس کا آئی کیو لیول 150 سے اوپر تھا، اپنی زندگی کو محض ایک کھیل سمجھتا تھا۔ اس کے لیے جذبات اور روحانیت کی کوئی اہمیت نہیں تھی۔ لیکن تقدیر نے ان دونوں کے راستے اس طرح ملائے کہ دونوں کی زندگیاں ہمیشہ کے لیے بدل گئیں۔
+
+"پیر کامل وہ راستہ ہے جو انسان کو اندھیروں سے نکال کر روشنی کی طرف لے جاتا ہے۔"
+
+امامہ نے اپنے گھر والوں کی مخالفت اور تمام آسائشوں کو ٹھکرا کر سچائی کے راستے کا انتخاب کیا۔ دوسری طرف سالار نے درد اور تکلیف کے لامتناہی مراحل سے گزر کر اپنے رب کو پہچانا۔`,
+                pdfData: null
+            },
+            {
+                id: "novel-2",
+                title: "آب حیات",
+                writer: "عمیرہ احمد",
+                category: "معاشرتی",
+                cover: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80",
+                description: "آب حیات 'پیر کامل' کا دوسرا حصہ ہے۔ اس میں سالار اور امامہ کی شادی شدہ زندگی، سود سے پاک معاشی نظام اور اخلاقی قدروں کی عکاسی کی گئی ہے۔",
+                content: `آب حیات - عمیرہ احمد
+
+باب اول:
+کیا انسان کی خواہشات کبھی ختم ہوتی ہیں؟ آب حیات اسی ابدی پیاس کی داستان ہے جو انسان کو مادی دنیا سے روحانی بالیدگی کی طرف لے جاتی ہے۔
+
+سالار سکندر نے دنیا کے بہترین مالیاتی نظاموں کا مطالعہ کرنے کے بعد یہ نتیجہ اخذ کیا کہ سود کے بغیر اسلامی معیشت ہی دنیا کو معاشی تباہی سے بچا سکتی ہے۔ اس کے ساتھ ساتھ سالار اور امامہ کی نجی زندگی میں آنے والے امتحانات نے ان کے ایمان کو مزید مضبوط کیا۔
+
+"حلال رزق اور پاکیزہ محبت ہی آب حیات ہیں جو روح کو سدا حیات رکھتے ہیں۔"`,
+                pdfData: null
+            },
+            {
+                id: "novel-3",
+                title: "جنت کے پتے",
+                writer: "نمرہ احمد",
+                category: "رومانی",
+                cover: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=600&q=80",
+                description: "ترکی کے خوبصورت مناظر کے پس منظر میں لکھی گئی ایک پرجوش کہانی۔ حیا سلیمان اور جہان سکندر کی محیر العقول اور پراسرار داستان۔",
+                content: `جنت کے پتے - نمرہ احمد
+
+باب اول:
+استنبول کی شامیں اور باسفورس کی ہوائیں کچھ الگ ہی سحر رکھتی ہیں۔ حیا سلیمان جب اسکالرشپ پر ترکی پہنچی تو اسے اندازہ نہیں تھا کہ اس کا ماضی اور مستقبل یہاں کس طرح یکجا ہونے والے ہیں۔
+
+سائبر کرائم، خفیہ ایجنسیوں کے راز اور چادر و حجاب کی اہمیت اس ناول کے بنیادی موضوعات ہیں۔ جہان سکندر کا کردار پراسرار اور حب الوطنی سے لبریز ہے۔
+
+"جب انسان اللہ کے لیے کسی چیز کو چھوڑتا ہے، تو اللہ اسے اس سے بہتر عطا کرتا ہے۔"`,
+                pdfData: null
+            },
+            {
+                id: "novel-4",
+                title: "راجہ گدھ",
+                writer: "بانو قدسیہ",
+                category: "تاریخی",
+                cover: "https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=600&q=80",
+                description: "اردو ادب کا لازوال شاہکار۔ رزقِ حرام اور حرام کے انسانی نظریات و جینیات پر اثرات کا فلسفیانہ و نفسیاتی تجزیہ۔",
+                content: `راجہ گدھ - بانو قدسیہ
+
+باب اول:
+محبت جب حد سے بڑھ جائے تو جنون بن جاتی ہے، اور جب رزق میں حرام شامل ہو جائے تو انسانی نسلوں میں گدھ پنا پیدا ہوتا ہے۔ 
+
+سیما، آفتاب اور قیوم کی مثلث پر مبنی یہ کہانی دراصل انسانی نفسیات اور مادی رویوں کا آئینہ ہے۔ بانو قدسیہ نے اس ناول میں رزقِ حلال کی پاکیزگی اور حرام کے مہلک اثرات کو فلسفیانہ انداز میں بیان کیا ہے۔`,
+                pdfData: null
+            },
+            {
+                id: "novel-5",
+                title: "مصحف",
+                writer: "نمرہ احمد",
+                category: "پراسرار",
+                cover: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80",
+                description: "قرآن پاک کی ہدایت اور زندگی کے مسائل کے حل پر مبنی ایک دلکش اور ایمان افروز کہانی جو محمل کے گرد گھومتی ہے۔",
+                content: `مصحف - نمرہ احمد
+
+باب اول:
+محمل ایک عام سی لڑکی تھی جس کی زندگی دکھوں اور مسائل سے گھری ہوئی تھی۔ پھر ایک دن اسے قرآن پاک (مصحف) کو سمجھ کر پڑھنے کا موقع ملا۔
+
+قرآن کا ہر صفحہ اس کے سوالات کا جواب بن گیا۔ اس ناول نے ثابت کیا کہ قرآن صرف تلاوت کے لیے نہیں بلکہ زندگی گزارنے کی مکمل ہدایت نامہ ہے۔`,
+                pdfData: null
+            }
+        ];
+
+        // Default Website Settings
+        const DEFAULT_SETTINGS = {
+            siteName: "اردو ناول نگری",
+            youtubeUrl: "https://youtube.com",
+            facebookUrl: "https://facebook.com",
+            instagramUrl: "https://instagram.com",
+            whatsappUrl: "https://wa.me/923000000000",
+            email: "contact@urdunovels.com",
+            aboutText: `اردو ناول نگری پاکستان اور دنیا بھر میں تمام اردو ادب کے شائقین کے لیے ایک بہترین اور مفت ڈیجیٹل پلیٹ فارم ہے۔
+
+ہمارا مقصد اردو زبان اور ادب کی ترویج کرنا ہے۔ یہاں آپ کو پاکستان کے تمام نامور مصنفین کے ناولز، رومانی، تاریخی، اسلامی اور پراسرار داستانیں آن لائن پڑھنے اور پی ڈی ایف فارمیٹ میں ڈاؤن لوڈ کرنے کے لیے میسر ہیں۔
+
+آپ بھی ہمارے ساتھ شامل ہوں اور اردو ادب کی اس خوبصورت کہکشاں کا حصہ بنیں۔`
+        };
+
+        let appNovels = [];
+        let appSettings = {};
+        let activeCategoryFilter = "ALL";
+        let tempUploadedCoverBase64 = null;
+        let tempUploadedPdfBase64 = null;
+        let readerFontSize = 18;
+
+        // Initialize App on Page Load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadStateFromStorage();
+            renderAppHeaderAndSettings();
+            renderCategoryChips();
+            renderNovelsGrid();
+            renderAboutPage();
+        });
+
+        // LocalStorage Loader
+        function loadStateFromStorage() {
+            const storedNovels = localStorage.getItem('urdu_novels_list');
+            if (storedNovels) {
+                try {
+                    appNovels = JSON.parse(storedNovels);
+                } catch(e) {
+                    appNovels = INITIAL_NOVELS;
+                }
+            } else {
+                appNovels = INITIAL_NOVELS;
+                localStorage.setItem('urdu_novels_list', JSON.stringify(appNovels));
+            }
+
+            const storedSettings = localStorage.getItem('urdu_site_settings');
+            if (storedSettings) {
+                try {
+                    appSettings = JSON.parse(storedSettings);
+                } catch(e) {
+                    appSettings = DEFAULT_SETTINGS;
+                }
+            } else {
+                appSettings = DEFAULT_SETTINGS;
+                localStorage.setItem('urdu_site_settings', JSON.stringify(appSettings));
+            }
+        }
+
+        function saveNovelsToStorage() {
+            localStorage.setItem('urdu_novels_list', JSON.stringify(appNovels));
+        }
+
+        function saveSettingsToStorage() {
+            localStorage.setItem('urdu_site_settings', JSON.stringify(appSettings));
+        }
+
+        function renderAppHeaderAndSettings() {
+            document.getElementById('site-logo-text').innerText = appSettings.siteName || "اردو ناول نگری";
+            document.getElementById('footer-logo-text').innerText = appSettings.siteName || "اردو ناول نگری";
+            
+            if (appSettings.youtubeUrl) {
+                document.getElementById('nav-yt-btn').href = appSettings.youtubeUrl;
+                document.getElementById('hero-yt-link').href = appSettings.youtubeUrl;
+            }
+        }
+
+        function renderCategoryChips() {
+            const categories = ["ALL", "رومانی", "اسلامی", "معاشرتی", "پراسرار", "خوفناک", "تاریخی"];
+            
+            // Collect custom categories if any
+            appNovels.forEach(n => {
+                if (n.category && !categories.includes(n.category)) {
+                    categories.push(n.category);
+                }
+            });
+
+            const container = document.getElementById('home-category-chips');
+            const dropdown = document.getElementById('novels-tab-category-filter');
+            const gridContainer = document.getElementById('categories-cards-grid');
+
+            container.innerHTML = '';
+            dropdown.innerHTML = '<option value="ALL">تمام کیٹیگریز</option>';
+            gridContainer.innerHTML = '';
+
+            categories.forEach(cat => {
+                const label = cat === 'ALL' ? 'تمام ناولز' : cat;
+                const isActive = activeCategoryFilter === cat;
+
+                // Home Chip
+                const chip = document.createElement('button');
+                chip.className = `px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap transition-all ${
+                    isActive ? 'bg-emerald-900 text-gold-400 border border-gold-500' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 hover:bg-emerald-50'
+                }`;
+                chip.innerText = label;
+                chip.onclick = () => filterByCategory(cat);
+                container.appendChild(chip);
+
+                // Select option
+                if (cat !== 'ALL') {
+                    const opt = document.createElement('option');
+                    opt.value = cat;
+                    opt.innerText = cat;
+                    dropdown.appendChild(opt);
+
+                    // Category Page Card
+                    const card = document.createElement('div');
+                    card.className = "bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 text-center hover:border-gold-500 transition cursor-pointer shadow-sm hover:shadow";
+                    card.onclick = () => { filterByCategory(cat); switchTab('home'); };
+                    card.innerHTML = `
+                        <div class="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-gold-400 flex items-center justify-center text-xl mx-auto mb-3">
+                            <i class="fa-solid fa-bookmark"></i>
+                        </div>
+                        <h4 class="font-bold urdu-title text-base text-gray-900 dark:text-gray-100">${cat}</h4>
+                        <p class="text-xs text-gray-500 mt-1">${appNovels.filter(n => n.category === cat).length} ناولز</p>
+                    `;
+                    gridContainer.appendChild(card);
+                }
+            });
+        }
+
+        function renderNovelsGrid(filteredList = null) {
+            const novelsToDisplay = filteredList || (
+                activeCategoryFilter === 'ALL' 
+                ? appNovels 
+                : appNovels.filter(n => n.category === activeCategoryFilter)
+            );
+
+            const grid = document.getElementById('novels-grid');
+            const allGrid = document.getElementById('all-novels-grid');
+            const noNovelsView = document.getElementById('no-novels-view');
+            const countBadge = document.getElementById('novel-count-badge');
+
+            countBadge.innerText = `${novelsToDisplay.length} ناولز`;
+
+            if (novelsToDisplay.length === 0) {
+                grid.innerHTML = '';
+                allGrid.innerHTML = '';
+                noNovelsView.classList.remove('hidden');
+                return;
+            } else {
+                noNovelsView.classList.add('hidden');
+            }
+
+            const cardsHTML = novelsToDisplay.map(novel => `
+                <div class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:border-gold-500/50 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col group">
+                    
+                    <!-- Cover Image Container -->
+                    <div class="relative h-64 sm:h-72 bg-gray-100 dark:bg-gray-900 overflow-hidden">
+                        <img src="${novel.cover || 'https://placehold.co/400x600/064e3b/ffffff?text=Urdu+Novel'}" 
+                             alt="${novel.title}" 
+                             onerror="this.src='https://placehold.co/400x600/064e3b/ffffff?text=Urdu+Novel'"
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 right-3 bg-emerald-950/80 backdrop-blur-md text-gold-400 text-xs font-semibold px-3 py-1 rounded-full border border-gold-500/30">
+                            ${novel.category}
+                        </span>
+                    </div>
+
+                    <!-- Details Box -->
+                    <div class="p-5 flex-grow flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <h3 class="urdu-title text-xl font-bold text-gray-900 dark:text-gray-100 group-hover:text-emerald-800 dark:group-hover:text-gold-400 transition-colors">
+                                ${novel.title}
+                            </h3>
+                            <p class="text-xs text-emerald-800 dark:text-emerald-400 font-semibold urdu-text">
+                                <i class="fa-solid fa-pen-nib text-xs ml-1"></i>مصنف: ${novel.writer}
+                            </p>
+                            <p class="urdu-text text-gray-600 dark:text-gray-300 text-sm line-clamp-3 leading-relaxed">
+                                ${novel.description}
+                            </p>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="pt-3 border-t border-gray-100 dark:border-gray-700/60 grid grid-cols-2 gap-2">
+                            <button onclick="openReader('${novel.id}')" 
+                                    class="w-full bg-emerald-900 hover:bg-emerald-800 text-white text-xs font-bold py-2.5 px-2 rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
+                                <i class="fa-solid fa-book-open"></i>
+                                <span>آن لائن پڑھیں</span>
+                            </button>
+                            <button onclick="downloadNovelPDF('${novel.id}')" 
+                                    class="w-full bg-gold-500 hover:bg-gold-600 text-emerald-950 text-xs font-bold py-2.5 px-2 rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
+                                <i class="fa-solid fa-download"></i>
+                                <span>PDF ڈاؤن لوڈ</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            grid.innerHTML = cardsHTML;
+            allGrid.innerHTML = cardsHTML;
+        }
+
+        // Filtering Actions
+        function filterByCategory(category) {
+            activeCategoryFilter = category;
+            renderCategoryChips();
+            renderNovelsGrid();
+        }
+
+        function handleSearch(query) {
+            const q = query.trim().toLowerCase();
+            if (!q) {
+                renderNovelsGrid();
+                return;
+            }
+            const filtered = appNovels.filter(n => 
+                n.title.toLowerCase().includes(q) || 
+                n.writer.toLowerCase().includes(q) || 
+                n.category.toLowerCase().includes(q)
+            );
+            renderNovelsGrid(filtered);
+        }
+
+        function resetFilters() {
+            activeCategoryFilter = "ALL";
+            document.getElementById('hero-search-input').value = '';
+            document.getElementById('novels-tab-search').value = '';
+            renderCategoryChips();
+            renderNovelsGrid();
+        }
+
+        // ONLINE NOVEL READER MODAL
+        function openReader(novelId) {
+            const novel = appNovels.find(n => n.id === novelId);
+            if (!novel) return;
+
+            document.getElementById('reader-novel-title').innerText = novel.title;
+            document.getElementById('reader-writer-name').innerText = `مصنف: ${novel.writer}`;
+            document.getElementById('reader-heading').innerText = novel.title;
+            document.getElementById('reader-author-sub').innerText = `تحریر: ${novel.writer}`;
+            document.getElementById('reader-cat-tag').innerText = novel.category;
+            document.getElementById('reader-text-body').innerText = novel.content;
+            
+            document.getElementById('reader-download-btn').onclick = () => downloadNovelPDF(novel.id);
+
+            document.getElementById('reader-screen').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeReader() {
+            document.getElementById('reader-screen').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function adjustReaderFontSize(delta) {
+            readerFontSize = Math.max(14, Math.min(32, readerFontSize + delta));
+            document.getElementById('reader-text-body').style.fontSize = `${readerFontSize}px`;
+        }
+
+        function toggleReaderTheme() {
+            const paper = document.getElementById('reader-paper');
+            paper.classList.toggle('dark');
+            document.documentElement.classList.toggle('dark');
+        }
+
+        // REAL PDF DOWNLOAD GENERATOR & FILE HANDLER
+        function downloadNovelPDF(novelId) {
+            const novel = appNovels.find(n => n.id === novelId);
+            if (!novel) return;
+
+            // If user uploaded a real PDF file base64
+            if (novel.pdfData) {
+                const link = document.createElement('a');
+                link.href = novel.pdfData;
+                link.download = `${novel.title.replace(/\s+/g, '_')}_UrduNovel.pdf`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                return;
+            }
+
+            // Fallback: Generate real PDF document using jsPDF
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                doc.setFontSize(22);
+                doc.text(novel.title, 105, 20, { align: "center" });
+                
+                doc.setFontSize(14);
+                doc.text(`Author: ${novel.writer}`, 105, 30, { align: "center" });
+                doc.text(`Category: ${novel.category}`, 105, 38, { align: "center" });
+                
+                doc.setFontSize(10);
+                doc.text("---------------------------------------------------------------------------------", 105, 45, { align: "center" });
+
+                const splitText = doc.splitTextToSize(novel.content, 180);
+                doc.setFontSize(12);
+                doc.text(splitText, 15, 55);
+
+                doc.save(`${novel.title.replace(/\s+/g, '_')}_UrduNovel.pdf`);
+            } catch (err) {
+                alert('پی ڈی ایف ڈاؤن لوڈ کرنے میں دشواری پیش آئی۔');
+            }
+        }
+
+        function renderAboutPage() {
+            document.getElementById('about-page-content').innerText = appSettings.aboutText;
+            
+            const container = document.getElementById('social-links-container');
+            container.innerHTML = `
+                ${appSettings.youtubeUrl ? `<a href="${appSettings.youtubeUrl}" target="_blank" class="flex items-center gap-2 p-3 bg-red-50 dark:bg-gray-700 text-red-600 dark:text-red-400 rounded-xl font-bold text-xs"><i class="fa-brands fa-youtube text-lg"></i><span>یوٹیوب</span></a>` : ''}
+                ${appSettings.facebookUrl ? `<a href="${appSettings.facebookUrl}" target="_blank" class="flex items-center gap-2 p-3 bg-blue-50 dark:bg-gray-700 text-blue-600 dark:text-blue-400 rounded-xl font-bold text-xs"><i class="fa-brands fa-facebook text-lg"></i><span>فیس بک</span></a>` : ''}
+                ${appSettings.instagramUrl ? `<a href="${appSettings.instagramUrl}" target="_blank" class="flex items-center gap-2 p-3 bg-pink-50 dark:bg-gray-700 text-pink-600 dark:text-pink-400 rounded-xl font-bold text-xs"><i class="fa-brands fa-instagram text-lg"></i><span>انسٹاگرام</span></a>` : ''}
+                ${appSettings.whatsappUrl ? `<a href="${appSettings.whatsappUrl}" target="_blank" class="flex items-center gap-2 p-3 bg-green-50 dark:bg-gray-700 text-green-600 dark:text-green-400 rounded-xl font-bold text-xs"><i class="fa-brands fa-whatsapp text-lg"></i><span>واٹس ایپ</span></a>` : ''}
+                ${appSettings.email ? `<a href="mailto:${appSettings.email}" class="flex items-center gap-2 p-3 bg-amber-50 dark:bg-gray-700 text-amber-700 dark:text-amber-400 rounded-xl font-bold text-xs"><i class="fa-solid fa-envelope text-lg"></i><span>ای میل</span></a>` : ''}
+            `;
+        }
+
+        // ADMIN PANEL MODAL CONTROLLER
+        function openAdminModal() {
+            document.getElementById('admin-modal').classList.remove('hidden');
+            renderAdminNovelsTable();
+            populateSettingsForm();
+        }
+
+        function closeAdminModal() {
+            document.getElementById('admin-modal').classList.add('hidden');
+        }
+
+        function switchAdminTab(subtab) {
+            document.querySelectorAll('.admin-subtab').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`admin-subtab-${subtab}`).classList.remove('hidden');
+
+            // Update tab styles
+            document.getElementById('admin-tab-btn-novels').className = subtab === 'novels' ? 'py-3 px-4 font-bold border-b-2 border-emerald-800 text-emerald-800 dark:text-gold-400' : 'py-3 px-4 text-gray-500';
+            document.getElementById('admin-tab-btn-add').className = subtab === 'add' ? 'py-3 px-4 font-bold border-b-2 border-emerald-800 text-emerald-800 dark:text-gold-400' : 'py-3 px-4 text-gray-500';
+            document.getElementById('admin-tab-btn-settings').className = subtab === 'settings' ? 'py-3 px-4 font-bold border-b-2 border-emerald-800 text-emerald-800 dark:text-gold-400' : 'py-3 px-4 text-gray-500';
+
+            if (subtab === 'add' && !document.getElementById('form-novel-id').value) {
+                resetNovelForm();
+            }
+        }
+
+        function renderAdminNovelsTable() {
+            const tbody = document.getElementById('admin-novels-tbody');
+            tbody.innerHTML = appNovels.map(novel => `
+                <tr class="hover:bg-gray-50 dark:hover:bg-gray-900 transition">
+                    <td class="p-3">
+                        <img src="${novel.cover || 'https://placehold.co/100x150'}" class="w-8 h-10 object-cover rounded shadow">
+                    </td>
+                    <td class="p-3 font-bold urdu-title">${novel.title}</td>
+                    <td class="p-3 urdu-text">${novel.writer}</td>
+                    <td class="p-3"><span class="bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-300 px-2 py-0.5 rounded text-xs">${novel.category}</span></td>
+                    <td class="p-3 text-center space-x-2 space-x-reverse">
+                        <button onclick="editNovel('${novel.id}')" class="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1 rounded text-xs font-semibold">ترمیم</button>
+                        <button onclick="deleteNovel('${novel.id}')" class="bg-red-600 hover:bg-red-700 text-white px-2.5 py-1 rounded text-xs font-semibold">حذف</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // File Select Handlers (Cover & PDF)
+        function handleCoverFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    tempUploadedCoverBase64 = evt.target.result;
+                    document.getElementById('cover-preview-img').src = tempUploadedCoverBase64;
+                    document.getElementById('cover-preview-box').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function handlePdfFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    tempUploadedPdfBase64 = evt.target.result;
+                    const status = document.getElementById('pdf-file-status');
+                    status.innerText = `پی ڈی ایف منتخب کر لی گئی ہے: ${file.name}`;
+                    status.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Save / Edit Novel Form Submission
+        function handleSaveNovel(e) {
+            e.preventDefault();
+            
+            const id = document.getElementById('form-novel-id').value || `novel-${Date.now()}`;
+            const title = document.getElementById('form-title').value.trim();
+            const writer = document.getElementById('form-writer').value.trim();
+            const customCat = document.getElementById('form-custom-category').value.trim();
+            const category = customCat || document.getElementById('form-category').value;
+            const coverUrl = document.getElementById('form-cover-url').value.trim();
+            const description = document.getElementById('form-description').value.trim();
+            const content = document.getElementById('form-content').value.trim();
+
+            const finalCover = tempUploadedCoverBase64 || coverUrl || 'https://placehold.co/400x600/064e3b/ffffff?text=Urdu+Novel';
+
+            const existingIndex = appNovels.findIndex(n => n.id === id);
+
+            const novelData = {
+                id,
+                title,
+                writer,
+                category,
+                cover: finalCover,
+                description,
+                content,
+                pdfData: tempUploadedPdfBase64 || (existingIndex > -1 ? appNovels[existingIndex].pdfData : null)
+            };
+
+            if (existingIndex > -1) {
+                appNovels[existingIndex] = novelData;
+            } else {
+                appNovels.unshift(novelData);
+            }
+
+            saveNovelsToStorage();
+            renderCategoryChips();
+            renderNovelsGrid();
+            renderAdminNovelsTable();
+            
+            resetNovelForm();
+            switchAdminTab('novels');
+        }
+
+        function editNovel(id) {
+            const novel = appNovels.find(n => n.id === id);
+            if (!novel) return;
+
+            document.getElementById('form-novel-id').value = novel.id;
+            document.getElementById('form-title').value = novel.title;
+            document.getElementById('form-writer').value = novel.writer;
+            document.getElementById('form-category').value = novel.category;
+            document.getElementById('form-cover-url').value = novel.cover.startsWith('data:') ? '' : novel.cover;
+            document.getElementById('form-description').value = novel.description;
+            document.getElementById('form-content').value = novel.content;
+
+            if (novel.cover) {
+                document.getElementById('cover-preview-img').src = novel.cover;
+                document.getElementById('cover-preview-box').classList.remove('hidden');
+            }
+
+            document.getElementById('admin-form-title').innerText = "ناول میں ترمیم کریں";
+            switchAdminTab('add');
+        }
+
+        function deleteNovel(id) {
+            if (confirm("کیا آپ واقعی اس ناول کو ختم کرنا چاہتے ہیں؟")) {
+                appNovels = appNovels.filter(n => n.id !== id);
+                saveNovelsToStorage();
+                renderCategoryChips();
+                renderNovelsGrid();
+                renderAdminNovelsTable();
+            }
+        }
+
+        function resetNovelForm() {
+            document.getElementById('novel-cms-form').reset();
+            document.getElementById('form-novel-id').value = '';
+            tempUploadedCoverBase64 = null;
+            tempUploadedPdfBase64 = null;
+            document.getElementById('cover-preview-box').classList.add('hidden');
+            document.getElementById('pdf-file-status').classList.add('hidden');
+            document.getElementById('admin-form-title').innerText = "نیا ناول شامل کریں";
+        }
+
+        // Settings Form Submission
+        function populateSettingsForm() {
+            document.getElementById('setting-site-name').value = appSettings.siteName || '';
+            document.getElementById('setting-yt-url').value = appSettings.youtubeUrl || '';
+            document.getElementById('setting-fb-url').value = appSettings.facebookUrl || '';
+            document.getElementById('setting-insta-url').value = appSettings.instagramUrl || '';
+            document.getElementById('setting-wa-url').value = appSettings.whatsappUrl || '';
+            document.getElementById('setting-email').value = appSettings.email || '';
+            document.getElementById('setting-about-text').value = appSettings.aboutText || '';
+        }
+
+        function handleSaveSettings(e) {
+            e.preventDefault();
+            appSettings = {
+                siteName: document.getElementById('setting-site-name').value.trim(),
+                youtubeUrl: document.getElementById('setting-yt-url').value.trim(),
+                facebookUrl: document.getElementById('setting-fb-url').value.trim(),
+                instagramUrl: document.getElementById('setting-insta-url').value.trim(),
+                whatsappUrl: document.getElementById('setting-wa-url').value.trim(),
+                email: document.getElementById('setting-email').value.trim(),
+                aboutText: document.getElementById('setting-about-text').value.trim(),
+            };
+
+            saveSettingsToStorage();
+            renderAppHeaderAndSettings();
+            renderAboutPage();
+            closeAdminModal();
+        }
+
+        // Main Navigation Tab Switching
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tab}`).classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileNav() {
+            document.getElementById('mobile-nav').classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
