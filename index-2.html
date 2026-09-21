@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rohan Novels Library 📚</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Georgia,"Noto Nastaliq Urdu",serif;background:#f8f1e5;color:#3d2b1f}
+header{background:linear-gradient(135deg,#5b2c3f,#8b4a5c);color:white;text-align:center;padding:42px 18px}
+header h1{margin:0 0 8px;font-size:38px}
+header p{margin:0;font-size:18px}
+.container{max-width:1150px;margin:auto;padding:25px 16px}
+.search{width:100%;padding:15px 18px;border:2px solid #d5b89a;border-radius:30px;font-size:17px;outline:none;margin-bottom:25px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px}
+.card{background:white;border-radius:18px;overflow:hidden;box-shadow:0 5px 18px #0001;border:1px solid #ead9c5;display:flex;flex-direction:column}
+.cover{height:220px;background:linear-gradient(135deg,#6d4050,#c49a6c);display:flex;flex-direction:column;align-items:center;justify-content:center;color:white}
+.cover span{font-size:65px}
+.cover small{font-size:15px;margin-top:8px}
+.card-body{padding:18px}
+.card h2{font-size:21px;margin:0 0 9px;color:#5b2c3f}
+.card p{line-height:1.7;color:#68584d;min-height:54px}
+.buttons{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.buttons a{text-decoration:none;padding:10px 13px;border-radius:10px;color:white;font-family:Arial,sans-serif;font-size:14px}
+.read{background:#6d4050} .download{background:#8b6a43}
+.disabled{opacity:.6;cursor:not-allowed}
+.note{font-size:12px;color:#9b8877;margin-top:10px}
+footer{text-align:center;padding:30px;color:#7d6b5b}
+.empty{display:none;text-align:center;padding:30px}
+</style>
+</head>
+<body>
+<header>
+<h1>📚 Rohan Novels Library</h1>
+<p>اردو ناولز کی خوبصورت لائبریری</p>
+</header>
+<main class="container">
+<input id="search" class="search" type="search" placeholder="🔍 ناول کا نام تلاش کریں...">
+<section id="grid" class="grid">
+
+      <article class="card" data-title="gulab ruton ko ane do">
+        <div class="cover"><span>📖</span><small>Novel 1</small></div>
+        <div class="card-body">
+          <h2>Gulab Ruton Ko Ane Do</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="kese charager ho tum">
+        <div class="cover"><span>📖</span><small>Novel 2</small></div>
+        <div class="card-body">
+          <h2>Kese Charager Ho Tum</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="mere raston ko gulab kar">
+        <div class="cover"><span>📖</span><small>Novel 3</small></div>
+        <div class="card-body">
+          <h2>Mere Raston Ko Gulab Kar</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="ek tere milan ka mosam">
+        <div class="cover"><span>📖</span><small>Novel 4</small></div>
+        <div class="card-body">
+          <h2>Ek Tere Milan Ka Mosam</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="her lamha khilta gulab sa">
+        <div class="cover"><span>📖</span><small>Novel 5</small></div>
+        <div class="card-body">
+          <h2>Her Lamha Khilta Gulab Sa</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="chalo ao qasm tore iqrar kre">
+        <div class="cover"><span>📖</span><small>Novel 6</small></div>
+        <div class="card-body">
+          <h2>Chalo Ao Qasm Tore Iqrar Kre</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="wo jo darj tha tere bakhat main">
+        <div class="cover"><span>📖</span><small>Novel 7</small></div>
+        <div class="card-body">
+          <h2>Wo Jo Darj Tha Tere Bakhat Main</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="ab jo ay ho to tehro">
+        <div class="cover"><span>📖</span><small>Novel 8</small></div>
+        <div class="card-body">
+          <h2>Ab Jo Ay Ho To Tehro</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="teri deed teri eid sajan">
+        <div class="cover"><span>📖</span><small>Novel 9</small></div>
+        <div class="card-body">
+          <h2>Teri Deed Teri Eid Sajan</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="main khwab safar main hu">
+        <div class="cover"><span>📖</span><small>Novel 10</small></div>
+        <div class="card-body">
+          <h2>Main Khwab Safar Main Hu</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="dill ka dard gazal hua">
+        <div class="cover"><span>📖</span><small>Novel 11</small></div>
+        <div class="card-body">
+          <h2>Dill Ka Dard Gazal Hua</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="teri dastras main darman">
+        <div class="cover"><span>📖</span><small>Novel 12</small></div>
+        <div class="card-body">
+          <h2>Teri Dastras Main Darman</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="ana parst">
+        <div class="cover"><span>📖</span><small>Novel 13</small></div>
+        <div class="card-body">
+          <h2>Ana Parst</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="kante bhi lagte hai gulab">
+        <div class="cover"><span>📖</span><small>Novel 14</small></div>
+        <div class="card-body">
+          <h2>Kante Bhi Lagte Hai Gulab</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="phir zindagi muskrai">
+        <div class="cover"><span>📖</span><small>Novel 15</small></div>
+        <div class="card-body">
+          <h2>Phir Zindagi Muskrai</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="tujhe juzwe zindagi">
+        <div class="cover"><span>📖</span><small>Novel 16</small></div>
+        <div class="card-body">
+          <h2>Tujhe Juzwe Zindagi</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="wo ek lamha mohbbat">
+        <div class="cover"><span>📖</span><small>Novel 17</small></div>
+        <div class="card-body">
+          <h2>Wo Ek Lamha Mohbbat</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="apna ho to asa ho">
+        <div class="cover"><span>📖</span><small>Novel 18</small></div>
+        <div class="card-body">
+          <h2>Apna Ho To Asa Ho</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="teri chahat mein">
+        <div class="cover"><span>📖</span><small>Novel 19</small></div>
+        <div class="card-body">
+          <h2>Teri Chahat Mein</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="be dagh">
+        <div class="cover"><span>📖</span><small>Novel 20</small></div>
+        <div class="card-body">
+          <h2>Be Dagh</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="ab mere ho ke raho">
+        <div class="cover"><span>📖</span><small>Novel 21</small></div>
+        <div class="card-body">
+          <h2>Ab Mere Ho Ke Raho</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="badal gai mere mosam">
+        <div class="cover"><span>📖</span><small>Novel 22</small></div>
+        <div class="card-body">
+          <h2>Badal Gai Mere Mosam</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="mohbat zeest ka hasil">
+        <div class="cover"><span>📖</span><small>Novel 23</small></div>
+        <div class="card-body">
+          <h2>Mohbat Zeest Ka Hasil</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="paanah">
+        <div class="cover"><span>📖</span><small>Novel 24</small></div>
+        <div class="card-body">
+          <h2>Paanah</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="lgan lgi tum se">
+        <div class="cover"><span>📖</span><small>Novel 25</small></div>
+        <div class="card-body">
+          <h2>Lgan Lgi Tum Se</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="main hari piya">
+        <div class="cover"><span>📖</span><small>Novel 26</small></div>
+        <div class="card-body">
+          <h2>Main Hari Piya</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="rahte dill hai tu">
+        <div class="cover"><span>📖</span><small>Novel 27</small></div>
+        <div class="card-body">
+          <h2>Rahte Dill Hai Tu</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="dhundkly chut jy ge">
+        <div class="cover"><span>📖</span><small>Novel 28</small></div>
+        <div class="card-body">
+          <h2>Dhundkly Chut Jy Ge</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="anchal main jugnu">
+        <div class="cover"><span>📖</span><small>Novel 29</small></div>
+        <div class="card-body">
+          <h2>Anchal Main Jugnu</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="shar-e-khab">
+        <div class="cover"><span>📖</span><small>Novel 30</small></div>
+        <div class="card-body">
+          <h2>Shar-e-Khab</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="hisar-e-mohbbat">
+        <div class="cover"><span>📖</span><small>Novel 31</small></div>
+        <div class="card-body">
+          <h2>Hisar-e-Mohbbat</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="barf k ansoo">
+        <div class="cover"><span>📖</span><small>Novel 32</small></div>
+        <div class="card-body">
+          <h2>Barf K Ansoo</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="nafrate ishqam">
+        <div class="cover"><span>📖</span><small>Novel 33</small></div>
+        <div class="card-body">
+          <h2>Nafrate Ishqam</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="mere hamdam mere dost">
+        <div class="cover"><span>📖</span><small>Novel 34</small></div>
+        <div class="card-body">
+          <h2>Mere Hamdam Mere Dost</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="khoonbha">
+        <div class="cover"><span>📖</span><small>Novel 35</small></div>
+        <div class="card-body">
+          <h2>Khoonbha</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="pyar ka paglpan">
+        <div class="cover"><span>📖</span><small>Novel 36</small></div>
+        <div class="card-body">
+          <h2>Pyar Ka Paglpan</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="haday ka iqrar">
+        <div class="cover"><span>📖</span><small>Novel 37</small></div>
+        <div class="card-body">
+          <h2>Haday Ka Iqrar</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+      <article class="card" data-title="azab bnay gulab">
+        <div class="cover"><span>📖</span><small>Novel 38</small></div>
+        <div class="card-body">
+          <h2>Azab Bnay Gulab</h2>
+          <p>خوبصورت اردو ناول — مکمل ناول پڑھنے کے لیے نیچے موجود بٹن استعمال کریں۔</p>
+          <div class="buttons">
+            <a class="read disabled" href="#" onclick="return false;">📖 Read Online</a>
+            <a class="download disabled" href="#" onclick="return false;">⬇️ Download PDF</a>
+          </div>
+          <div class="note">PDF link بعد میں یہاں شامل ہوگا</div>
+        </div>
+      </article>
+</section>
+<div id="empty" class="empty">کوئی ناول نہیں ملا۔</div>
+</main>
+<footer>© Rohan Novels Library</footer>
+<script>
+const search = document.getElementById('search');
+const cards = [...document.querySelectorAll('.card')];
+const empty = document.getElementById('empty');
+search.addEventListener('input', () => {
+  const q = search.value.trim().toLowerCase();
+  let shown = 0;
+  cards.forEach(card => {
+    const ok = card.dataset.title.includes(q);
+    card.style.display = ok ? '' : 'none';
+    if(ok) shown++;
+  });
+  empty.style.display = shown ? 'none' : 'block';
+});
+</script>
+</body>
+</html>
